@@ -31,9 +31,14 @@ socket.on("roomMessage", (data) => {
 });
 
 
-socket.on("userRegistered", ({ username }) => {
+socket.on("userRegistered", ({ username, isNew }) => {
+
     currentUser = username;
-    console.log(`✅ Welcome, ${username}`);
+    if (isNew) {
+        console.log(`✅Create new user: ${username}!`);
+    } else {
+        console.log(`✅ Welcome, ${username}!`);
+    }
     showMenu();
 });
 

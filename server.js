@@ -20,13 +20,20 @@ io.on("connection", (socket) => {
 
     socket.on("registerUser", async ({ username, password }) => {
         let user = await User.findOne({ username });
+        let isNew = false;
+
         if (!user) {
             user = await User.create({ username, password });
             console.log("Create new user:", username);
+            isNew = true;
         }
+
         socket.username = username;
         usersMap.set(username, socket.id);
-        socket.emit("userRegistered", { username, id: socket.id });
+
+        socket.emit("userRegistered", { username, id: socket.id, isNew });
+
+
     });
 
     socket.on("privateMessage", async ({ toUsername, message, from }) => {
@@ -60,7 +67,7 @@ io.on("connection", (socket) => {
     socket.on("roomMessage", async ({ room, message, from }) => {
         io.to(room).emit("roomMessage", { from, room, message });
 
-        await RoomMessage.create({ from, room, message });
+        // await RoomMessage.create({ from, room, message });
     });
 
     socket.on("disconnect", () => {
