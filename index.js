@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 
-dotenv.config(); // .env faylını oxuyur
+dotenv.config();
 
 const MONGO_URL = process.env.MONGO_URL;
 
